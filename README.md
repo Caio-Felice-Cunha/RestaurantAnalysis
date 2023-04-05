@@ -15,20 +15,13 @@ Danny’s Diner is in need of your assistance to help the restaurant stay afloat
 Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite. Having this deeper connection with his customers will help him deliver a better and more personalised experience for his loyal customers.<br>
 He plans on using these insights to help him decide whether he should expand the existing customer loyalty program - additionally he needs help to generate some basic datasets so his team can easily inspect the data without needing to use SQL.
 
-
 ## Solution Strategy
 We used MySQL as database management system to solve this problem.
 
-## r(Data Insights)
-Here we insert our thesis (H0 and H1) and the results for that
+## Insights
+For more Data Insights, Business Results, check the [script](https://github.com/Caio-Felice-Cunha/RestaurantAnalysis/blob/main/Case%20Study%20Questions.sql)
 
-## r(Business Results)
-The business impact that our project may cause
-
-## r(Conclusions)
-What I concluded
-
-## r(Next Steps)
+## Next Steps
 * Accepting Suggestions
 
 ## Disclaimer
