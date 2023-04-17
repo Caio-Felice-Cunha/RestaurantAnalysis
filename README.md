@@ -17,6 +17,11 @@ He plans on using these insights to help him decide whether he should expand the
 
 ## Solution Strategy
 We used MySQL as database management system to solve this problem.
+* Step 01: SELCT;
+* Step 02: WHERE;
+* Step 03: GROUP BY & ORDER BY;
+* Step 04: JOINS;
+* Step 05: Common table expression (CTE).
 
 ## Insights
 For more Data Insights, Business Results, check the [script](https://github.com/Caio-Felice-Cunha/RestaurantAnalysis/blob/main/Case%20Study%20Questions.sql)
