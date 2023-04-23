@@ -1,4 +1,4 @@
-# RestaurantAnalysis
+# Restaurant Analysis
 Analyzing Restaurant data with [MySQL](https://github.com/Caio-Felice-Cunha/RestaurantAnalysis/blob/main/Case%20Study%20Questions.sql)
 
 <img align="center" src=https://user-images.githubusercontent.com/111542025/230171030-1e71c560-e7f9-47c9-80e9-039d8e927d05.png>
