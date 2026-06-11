@@ -47,20 +47,20 @@ WITH FirstPurchaseItem AS (
 			LEFT JOIN 
 		menu ON sales.product_id = menu.product_id
 )
-SELECT 
-    customer_id, 
-    MIN(product_name) AS first_purchased_item
-FROM 
-    FirstPurchaseItem	
-WHERE 
+SELECT DISTINCT
+    customer_id,
+    product_name AS first_purchased_item
+FROM
+    FirstPurchaseItem
+WHERE
     OrderRank = 1
-GROUP BY 
-    customer_id;
+ORDER BY
+    customer_id, product_name;
 /*
 ############ Answer ############
-The first item purchased by A was sushi or curry
-The first item purchased by b was curry
-The first item purchased by A was ramen
+The first item purchased by A was sushi or curry (both on 2021-01-01)
+The first item purchased by B was curry
+The first item purchased by C was ramen
 ############ Answer ############
 */
 
@@ -121,13 +121,13 @@ WITH FirstPurchaseMember AS (
         sales.order_date, 
         menu.product_name,
 		DENSE_RANK () OVER (PARTITION BY sales.customer_id ORDER BY sales.order_date) AS RankOrder
-	FROM 
+	FROM
 		sales
-			LEFT JOIN 
+			INNER JOIN
 		members ON sales.customer_id = members.customer_id
-			LEFT JOIN 
+			LEFT JOIN
 		menu ON sales.product_id = menu.product_id
-	WHERE 
+	WHERE
 		sales.order_date >= members.join_date
 )
 SELECT 
@@ -152,13 +152,13 @@ WITH NotMemberPurchase AS (
 		sales.order_date, 
         menu.product_name,
 		DENSE_RANK () OVER (PARTITION BY sales.customer_id ORDER BY sales.order_date DESC) AS RankOrderDate
-	FROM 
+	FROM
 		sales
-			LEFT JOIN 
+			INNER JOIN
 		members ON sales.customer_id = members.customer_id
-			LEFT JOIN 
+			LEFT JOIN
 		menu ON sales.product_id = menu.product_id
-	WHERE 
+	WHERE
 		sales.order_date < members.join_date
 )
 SELECT 
@@ -177,7 +177,7 @@ Customer C has not yet become a member
 */
 
 -- 8. What is the total items and amount spent for each member before they became a member?
-# Total Amount
+-- Total Amount
 SELECT 
     sales.customer_id AS Customer,
     SUM(menu.price) AS 'Total Amount'
@@ -201,10 +201,10 @@ Customer C has not yet become a member
 ############ Answer ############
 */
 
-# Total Itens
-SELECT 
+-- Total Items
+SELECT
     sales.customer_id AS Customer,
-    Count(menu.product_id) as 'Total Itens'
+    Count(menu.product_id) as 'Total Items'
 FROM 
     sales
 	JOIN 
@@ -249,25 +249,30 @@ Customer C would have 360 points
 */
 
 -- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
-SELECT 
-	sales.customer_id, 
-	SUM(CASE 
-			WHEN sales.order_date BETWEEN members.join_date AND members.join_date + 6 THEN menu.price * 20
+SELECT
+	sales.customer_id,
+	SUM(CASE
+			WHEN sales.order_date BETWEEN members.join_date AND DATE_ADD(members.join_date, INTERVAL 6 DAY) THEN menu.price * 20
 			WHEN menu.product_name = 'sushi' THEN menu.price * 20
 		ELSE menu.price*10
 		END) AS total_points
 FROM members
-      LEFT JOIN 
+      LEFT JOIN
 	sales USING (customer_id)
-      LEFT JOIN 
+      LEFT JOIN
 	menu USING (product_id)
-GROUP BY 
+WHERE
+	sales.order_date <= '2021-01-31'
+GROUP BY
 	sales.customer_id
-ORDER BY 
+ORDER BY
 	sales.customer_id;
 /*
 ############ Answer ############
 Customer A would have 1370 points
-Customer B would have 940 points
+Customer B would have 820 points
+(The question asks for points at the end of January, so orders after
+ 2021-01-31 are excluded. Without that cutoff customer B's 2021-02-01
+ ramen order is wrongly counted and the total comes out to 940.)
 ############ Answer ############
 */
